@@ -1,15 +1,11 @@
-﻿using System.Security.Cryptography;
-using ConsoleApp1.HelperClasses;
+﻿using ConsoleApp1.HelperClasses;
+using ConsoleApp1.Services;
 
-namespace ConsoleApp1;
-class Program
+if (!ArgsValidation.IsArgsValid(args, out string message))
 {
-    public static void Main(string[] args)
-    {
-        if (!ArgsValidation.IsArgsValid(args, out string message))
-        {
-            Console.WriteLine(message);
-            return;
-        }
-    }
+    Console.WriteLine(message);
+    return;
 }
+
+var service = new GameService(args);
+service.ShowMenu();

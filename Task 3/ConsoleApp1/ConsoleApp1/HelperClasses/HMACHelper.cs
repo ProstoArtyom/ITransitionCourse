@@ -1,4 +1,9 @@
-﻿namespace ConsoleApp1.HelperClasses;
+﻿using System.Security.Cryptography;
+using System.Text;
+using ConsoleApp1.HelperClasses.Extensions;
+using SHA3.Net;
+
+namespace ConsoleApp1.HelperClasses;
 public class HMACHelper
 {
     public string AESKey { get; } = GetAESKey();
@@ -10,9 +15,7 @@ public class HMACHelper
         aesAlgorithm.KeySize = 256;
         aesAlgorithm.GenerateKey();
 
-        string keyBase64 = Convert.ToBase64String(aesAlgorithm.Key);
-
-        return keyBase64;
+        return aesAlgorithm.Key.ToHex();
     }
 
     public string GetHMAC(string move)
