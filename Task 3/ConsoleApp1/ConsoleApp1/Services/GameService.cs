@@ -59,7 +59,6 @@ public class GameService
                     Console.WriteLine($"Your move: {_moves[index]}");
                     Console.WriteLine($"Computer move: {ComputerMove}");
 
-                    // TODO: Implement making move logic
                     int a = index, b = ComputerMoveIndex;
                     int n = _moves.Length, p = n >> 1;
                     var result = Math.Sign((a - b + p + n) % n - p);
