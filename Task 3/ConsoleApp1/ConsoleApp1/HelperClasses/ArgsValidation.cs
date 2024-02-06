@@ -8,9 +8,9 @@ public static class ArgsValidation
 
     public static bool IsArgsValid(string[] args, out string message)
     {
-        if (args.Length == 0)
+        if (args.Length < 3)
         {
-            message = $"There needs to be arguments!\n{Example}";
+            message = $"There needs to be at least 3 arguments!\n{Example}";
             return false;
         }
 
