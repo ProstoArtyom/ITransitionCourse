@@ -1,4 +1,9 @@
-﻿namespace ConsoleApp1.HelperClasses;
+﻿using System.Security.Cryptography;
+using System.Text;
+using ConsoleApp1.HelperClasses.Extensions;
+using SHA3.Net;
+
+namespace ConsoleApp1.HelperClasses;
 public class HMACHelper
 {
     public string AESKey { get; } = GetAESKey();
