@@ -1,4 +1,4 @@
-﻿namespace ConsoleApp1;
+﻿namespace ConsoleApp1.HelperClasses;
 public static class ArgsValidation
 {
     public static string Example =>

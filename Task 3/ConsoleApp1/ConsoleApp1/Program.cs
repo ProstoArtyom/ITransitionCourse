@@ -1,4 +1,5 @@
 ﻿using System.Security.Cryptography;
+using ConsoleApp1.HelperClasses;
 
 namespace ConsoleApp1;
 class Program
