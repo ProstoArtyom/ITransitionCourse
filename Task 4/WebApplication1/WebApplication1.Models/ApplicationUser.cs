@@ -7,6 +7,7 @@ using System.ComponentModel;
 namespace WebApplication1.Models;
 public class ApplicationUser : IdentityUser
 {
+    public string Name { get; set; }
     [DisplayName("Last Login Time")]
     public DateTime LastLoginTime { get; set; }
     [DisplayName("Registration Time")]
