@@ -1,11 +1,12 @@
 ﻿@model IEnumerable<ApplicationUser>
 
 <div class="row d-flex justify-content-center align-items-center">
-    <form method="post" action="@Url.Action("UpdateUsers")">
+    <form method="post" action="@Url.Action("UpdateUsers")" id="myForm">
         <div class="py-2">
-            <button type="submit" name="action" value="Block" class="btn btn-danger" id="blockButton" disabled>Block</button>
-            <button type="submit" name="action" value="Unlock" class="btn btn-primary" id="unlockButton" disabled><i class="bi bi-unlock"></i></button>
-            <button type="submit" name="action" value="Delete" class="btn btn-danger" id="deleteButton" disabled><i class="bi bi-trash3"></i></button>
+            <input type="hidden" name="action" id="action">
+            <button type="submit" class="btn btn-outline-dark" id="blockButton" disabled><i class="bi bi-lock"></i> Block</button>
+            <button type="submit" class="btn btn-outline-dark" id="unlockButton" disabled><i class="bi bi-unlock"></i></button>
+            <button type="submit" class="btn btn-danger" id="deleteButton" disabled><i class="bi bi-trash3"></i></button>
         </div>
 
         <table class="table table-bordered table-striped">
@@ -64,9 +65,31 @@
         document.getElementById('deleteButton').disabled = !isChecked;
     }
 
-    document.getElementById('deleteButton').addEventListener('click', function () {
-        if (confirm('Are you sure to delete selected rows?')) {
-            // Add your delete logic here
-        }
+    document.getElementById('blockButton').addEventListener('click', function (event) {
+        document.getElementById('action').value = 'Block';
+        document.getElementById('myForm').submit();
+    });
+
+    document.getElementById('unlockButton').addEventListener('click', function (event) {
+        document.getElementById('action').value = 'Unlock';
+        document.getElementById('myForm').submit();
+    });
+
+    document.getElementById('deleteButton').addEventListener('click', function (e) {
+        e.preventDefault();
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('action').value = 'Delete';
+                document.getElementById('myForm').submit();
+            }
+        })
     });
 </script>

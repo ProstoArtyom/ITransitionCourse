@@ -45,7 +45,7 @@ namespace WebApplication1.Areas.User.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateUsers(List<string> selectedUsers, string action)
         {
-            if (selectedUsers != null)
+            if (selectedUsers != null && selectedUsers.Count > 0)
             {
                 foreach (var userId in selectedUsers)
                 {
@@ -58,17 +58,20 @@ namespace WebApplication1.Areas.User.Controllers
                             {
                                 user.Status = "Blocked";
                                 await _userManager.UpdateSecurityStampAsync(user);
+                                TempData["success"] = "Selected users have been blocked!";
                                 break;
                             }
                             case "Unlock":
                             {
                                 user.Status = "Active";
+                                TempData["success"] = "Selected users have been unlocked!";
                                 break;
                             }
                             case "Delete":
                             {
                                 await _userManager.UpdateSecurityStampAsync(user);
                                 await _userManager.DeleteAsync(user);
+                                TempData["success"] = "Selected users have been deleted!";
                                 break;
                             }
                         }
