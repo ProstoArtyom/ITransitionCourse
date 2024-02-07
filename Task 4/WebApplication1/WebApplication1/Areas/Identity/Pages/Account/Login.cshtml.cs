@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using WebApplication1.DataAccess.Repository.IRepository;
+using WebApplication1.Models;
 
 namespace WebApplication1.Areas.Identity.Pages.Account
 {
@@ -21,11 +23,15 @@ namespace WebApplication1.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<IdentityUser> signInManager, 
+            ILogger<LoginModel> logger,
+            IUnitOfWork unitOfWork)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _unitOfWork = unitOfWork;
         }
 
         /// <summary>
@@ -116,6 +122,11 @@ namespace WebApplication1.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+
+                    var user = _unitOfWork.ApplicationUser.Get(u => u.Email == Input.Email, tracked: true);
+                    user.LastLoginTime = DateTime.Now;
+                    _unitOfWork.Save();
+
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)

@@ -3,6 +3,7 @@ using WebApplication1.DataAccess.Data;
 using WebApplication1.DataAccess.Repository.IRepository;
 using WebApplication1.DataAccess.Repository;
 using Microsoft.AspNetCore.Identity;
+using WebApplication1.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 

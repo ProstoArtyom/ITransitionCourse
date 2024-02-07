@@ -81,6 +81,10 @@ namespace WebApplication1.Areas.Identity.Pages.Account
             [Display(Name = "Email")]
             public string Email { get; set; }
 
+            [Required]
+            [Display(Name = "Name")]
+            public string Name { get; set; }
+
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
@@ -116,9 +120,10 @@ namespace WebApplication1.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
 
-                user.RegistrationTime = DateTime.UtcNow;
-                user.LastLoginTime = DateTime.UtcNow;
+                user.RegistrationTime = DateTime.Now;
+                user.LastLoginTime = DateTime.Now;
                 user.Status = SD.ActiveStatus;
+                user.Name = Input.Name;
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
