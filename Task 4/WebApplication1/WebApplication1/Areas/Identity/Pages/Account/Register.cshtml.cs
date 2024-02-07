@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using WebApplication1.Models;
+using WebApplication1.Utility;
 
 namespace WebApplication1.Areas.Identity.Pages.Account
 {
@@ -117,7 +118,7 @@ namespace WebApplication1.Areas.Identity.Pages.Account
 
                 user.RegistrationTime = DateTime.UtcNow;
                 user.LastLoginTime = DateTime.UtcNow;
-                user.Status = "Active";
+                user.Status = SD.ActiveStatus;
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
