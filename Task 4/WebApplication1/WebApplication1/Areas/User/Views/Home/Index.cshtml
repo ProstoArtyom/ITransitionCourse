@@ -1,8 +1,72 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model IEnumerable<ApplicationUser>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="row d-flex justify-content-center align-items-center">
+    <div class="py-2">
+        <button type="button" class="btn btn-danger" id="blockButton" disabled>Block</button>
+        <button type="button" class="btn btn-primary" id="unlockButton" disabled><i class="bi bi-unlock"></i></button>
+        <button type="button" class="btn btn-danger" id="deleteButton" disabled><i class="bi bi-trash3"></i></button>
+    </div>
+    
+    <div>
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th scope="col">
+                    <input type="checkbox" id="selectAll"/>
+                </th>
+                <th scope="col">Id</th>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Last Login Time</th>
+                <th scope="col">Registration Time</th>
+                <th scope="col">Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>
+                        <input type="checkbox" class="rowCheckbox"/>
+                    </td>
+                    <td>@user.Id</td>
+                    <td>@user.Name</td>
+                    <td>@user.Email</td>
+                    <td>@user.LastLoginTime</td>
+                    <td>@user.RegistrationTime</td>
+                    <td>@user.Status</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
 </div>
+
+<script>
+    document.getElementById('selectAll').addEventListener('click', function (e) {
+        var checkboxes = document.getElementsByClassName('rowCheckbox');
+        for (var i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].checked = e.target.checked;
+        }
+        toggleButtons();
+    });
+
+    var checkboxes = document.getElementsByClassName('rowCheckbox');
+    for (var i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].addEventListener('change', toggleButtons);
+    }
+
+    function toggleButtons() {
+        var checkboxes = document.getElementsByClassName('rowCheckbox');
+        var isChecked = Array.from(checkboxes).some(x => x.checked);
+        document.getElementById('blockButton').disabled = !isChecked;
+        document.getElementById('unlockButton').disabled = !isChecked;
+        document.getElementById('deleteButton').disabled = !isChecked;
+    }
+
+    document.getElementById('deleteButton').addEventListener('click', function () {
+        if (confirm('Are you sure to delete selected rows?')) {
+            // Add your delete logic here
+        }
+    });
+</script>
