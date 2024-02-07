@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<ApplicationUser>
 
 <div class="row d-flex justify-content-center align-items-center">
-    <div class="py-2">
-        <button type="button" class="btn btn-danger" id="blockButton" disabled>Block</button>
-        <button type="button" class="btn btn-primary" id="unlockButton" disabled><i class="bi bi-unlock"></i></button>
-        <button type="button" class="btn btn-danger" id="deleteButton" disabled><i class="bi bi-trash3"></i></button>
-    </div>
-    
-    <div>
+    <form method="post" action="@Url.Action("UpdateUsers")">
+        <div class="py-2">
+            <button type="submit" name="action" value="Block" class="btn btn-danger" id="blockButton" disabled>Block</button>
+            <button type="submit" name="action" value="Unlock" class="btn btn-primary" id="unlockButton" disabled><i class="bi bi-unlock"></i></button>
+            <button type="submit" name="action" value="Delete" class="btn btn-danger" id="deleteButton" disabled><i class="bi bi-trash3"></i></button>
+        </div>
+
         <table class="table table-bordered table-striped">
             <thead>
             <tr>
@@ -27,7 +27,7 @@
             {
                 <tr>
                     <td>
-                        <input type="checkbox" class="rowCheckbox"/>
+                        <input type="checkbox" class="rowCheckbox" name="selectedUsers" value="@user.Id"/>
                     </td>
                     <td>@user.Id</td>
                     <td>@user.Name</td>
@@ -39,7 +39,7 @@
             }
             </tbody>
         </table>
-    </div>
+    </form>
 </div>
 
 <script>
