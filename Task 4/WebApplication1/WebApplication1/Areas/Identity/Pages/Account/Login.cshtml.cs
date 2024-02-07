@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using WebApplication1.DataAccess.Repository.IRepository;
 using WebApplication1.Models;
+using WebApplication1.Utility;
 
 namespace WebApplication1.Areas.Identity.Pages.Account
 {
@@ -116,32 +117,34 @@ namespace WebApplication1.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
-                if (result.Succeeded)
+                var user = _unitOfWork.ApplicationUser.Get(u => u.Email == Input.Email, tracked: true);
+                if (user != null)
                 {
-                    _logger.LogInformation("User logged in.");
+                    if (user.Status == SD.BlockedStatus)
+                    {
+                        ModelState.AddModelError("", "The account has been blocked!");
+                        return Page();
+                    }
 
-                    var user = _unitOfWork.ApplicationUser.Get(u => u.Email == Input.Email, tracked: true);
-                    user.LastLoginTime = DateTime.Now;
-                    _unitOfWork.Save();
+                    var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                    if (result.Succeeded)
+                    {
+                        _logger.LogInformation("User logged in.");
 
-                    return LocalRedirect(returnUrl);
-                }
-                if (result.RequiresTwoFactor)
-                {
-                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
-                }
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning("User account locked out.");
-                    return RedirectToPage("./Lockout");
+                        user.LastLoginTime = DateTime.Now;
+                        _unitOfWork.Save();
+
+                        return LocalRedirect(returnUrl);
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "Invalid email or password.");
+                        return Page();
+                    }
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return Page();
+                    ModelState.AddModelError(string.Empty, "Invalid email or password.");
                 }
             }
 
