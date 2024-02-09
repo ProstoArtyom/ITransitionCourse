@@ -12,7 +12,7 @@ public class UserGenerator : Generator<User>
         Faker.RuleFor(u => u.Id, f => f.Random.Guid().ToString())
             .RuleFor(u => u.Number, f => f.IndexVariable++)
             .RuleFor(u => u.Name, f => f.Name.FullName())
-            .RuleFor(u => u.StreetAddress, f => f.Address.GetFullAddress())
+            .RuleFor(u => u.FullAddress, f => f.Address.GetFullAddress())
             .RuleFor(u => u.PhoneNumber, f => f.Phone.PhoneNumber());
     }
     
