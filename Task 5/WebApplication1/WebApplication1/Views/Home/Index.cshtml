@@ -1,14 +1,32 @@
-﻿@model IEnumerable<User>
+﻿@using WebApplication1.Utility.HelperClasses
+@model UserVM
 
 <div class="row d-flex justify-content-center align-items-center">
     <form method="post">
-        @*<div class="py-2">
-            <input type="hidden" name="action" id="action">
-            <button type="submit" class="btn btn-outline-dark" id="blockButton" disabled><i class="bi bi-lock"></i> Block</button>
-            <button type="submit" class="btn btn-outline-dark" id="unlockButton" disabled><i class="bi bi-unlock"></i></button>
-            <button type="submit" class="btn btn-danger" id="deleteButton" disabled><i class="bi bi-trash3"></i></button>
-        </div>*@
+        <div class="row">
+            <div asp-validation-summary="All" class="text-danger" role="alert"></div>
+            <div class="d-flex justify-content-between py-2">
+                <select asp-for="Region" class="form-select me-4" aria-label="Default select example">
+                    @foreach (var region in RegionHelper.Regions)
+                    {
+                        <option value="@region.Value">@region.Key</option>
+                    }
+                </select>
+                <div class="input-group">
+                    <input asp-for="Seed" id="seedInput" type="text" class="form-control" placeholder="Enter seed">
+                    <button id="randomizeButton" type="button" class="btn btn-primary">
+                        Randomize
+                    </button>
+                </div>
+            </div>
 
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-primary">
+                    Generate
+                </button>
+            </div>
+        </div>
+        <br/>
         <table class="table table-bordered table-striped">
             <thead>
             <tr>
@@ -20,7 +38,7 @@
             </tr>
             </thead>
             <tbody>
-            @foreach (var user in Model)
+            @foreach (var user in Model.Users)
             {
                 <tr>
                     <td>@user.Number</td>
@@ -34,3 +52,33 @@
         </table>
     </form>
 </div>
+
+@section Scripts
+{
+    <script>
+        var increment = 10;
+        
+        function loadData() {
+            $.ajax({
+                url: '/Home/LoadData',
+                type: 'GET',
+                data: { count: increment },
+                success: function (response) {
+                    $('table tbody').append(response);
+                }
+            });
+        }
+        
+        $(window).scroll(function () {
+            if ($(window).scrollTop() >= $(document).height() - $(window).height() - 10) {
+                loadData();
+            }
+        });
+        
+        $('#randomizeButton').click(function() {
+            $.post('/Home/GenerateSeed', function(seed) {
+                $('#seedInput').val(seed);
+            });
+        });
+    </script>
+}

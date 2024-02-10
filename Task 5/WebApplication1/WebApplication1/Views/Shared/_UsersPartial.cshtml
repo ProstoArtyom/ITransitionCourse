@@ -1,0 +1,12 @@
+﻿@model IEnumerable<User>
+
+@foreach (var user in Model)
+{
+    <tr>
+        <td>@user.Number</td>
+        <td>@user.Id</td>
+        <td>@user.Name</td>
+        <td>@user.FullAddress</td>
+        <td>@user.PhoneNumber</td>
+    </tr>
+}

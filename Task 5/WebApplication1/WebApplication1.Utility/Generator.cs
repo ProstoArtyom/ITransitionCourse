@@ -6,16 +6,28 @@ namespace WebApplication1.Utility;
 
 public class Generator<T> : IGenerator<T> where T : class
 {
-    public Faker<T> Faker { get; }
-
-    public Generator(string locale, int seed)
+    protected Faker<T> Faker { get; set; }
+    public string Region { get; set; }
+    public int Seed { get; set; }
+    public Generator(string region = "en_US", int seed = 0)
     {
-        Faker = new Faker<T>(locale)
-            .UseSeed(seed);
+        Initialize(region, seed);
     }
 
+    public virtual void Initialize(string region, int seed)
+    {
+        Faker = new Faker<T>(Region = region)
+            .StrictMode(true)
+            .UseSeed(Seed = seed);
+    }
+    
     public virtual IEnumerable<T> Generate(int count = 1)
     {
         return Faker.Generate(count);
+    }
+    
+    public virtual void Reset()
+    {
+        Initialize(Region, Seed);
     }
 }
