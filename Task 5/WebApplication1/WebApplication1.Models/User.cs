@@ -1,4 +1,6 @@
-﻿namespace WebApplication1.Models;
+﻿using FileHelpers;
+
+namespace WebApplication1.Models;
 
 public class User
 {

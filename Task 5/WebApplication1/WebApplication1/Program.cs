@@ -1,4 +1,10 @@
-using WebApplication1.Utility;
+using System.Globalization;
+using WebApplication1.Models.ViewModels;
+using WebApplication1.Utility.Faker;
+
+var cultureInfo = new CultureInfo("en-US");
+CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
 var builder = WebApplication.CreateBuilder(args);
 

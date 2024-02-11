@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FileHelpers" Version="3.5.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\WebApplication1.Models\WebApplication1.Models.csproj" />
     <ProjectReference Include="..\WebApplication1.Utility\WebApplication1.Utility.csproj" />
   </ItemGroup>

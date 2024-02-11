@@ -1,8 +1,8 @@
 ﻿using Bogus;
 using WebApplication1.Models;
-using WebApplication1.Utility.IGenerator;
+using WebApplication1.Utility.Faker.IGenerator;
 
-namespace WebApplication1.Utility;
+namespace WebApplication1.Utility.Faker;
 
 public class Generator<T> : IGenerator<T> where T : class
 {

@@ -1,12 +1,15 @@
 ﻿using Bogus;
 using WebApplication1.Models;
-using WebApplication1.Utility.Extensions;
-using WebApplication1.Utility.IGenerator;
+using WebApplication1.Utility.Faker.Extensions;
 
-namespace WebApplication1.Utility;
+namespace WebApplication1.Utility.Faker;
 
 public class UserGenerator : Generator<User>
 {
+    public List<User> Users { get; set; }
+    public float ErrorFactor { get; set; }
+    public int ErrorSeed { get; set; }
+
     public UserGenerator(string region = "en_US", int seed = 0)
     {
         Initialize(region, seed);
@@ -22,8 +25,28 @@ public class UserGenerator : Generator<User>
             .RuleFor(u => u.PhoneNumber, f => f.Phone.PhoneNumber());
     }
 
+    public override IEnumerable<User> Generate(int count = 1)
+    {
+        return base.Generate(count).GenerateErrorUsers(ErrorFactor, ErrorSeed);
+    }
+
     public override void Reset()
     {
         Initialize(Region, Seed);
+    }
+
+    public void SetValues(string region, int seed, float errorFactor, int errorSeed)
+    {
+        Region = region;
+        Seed = seed;
+        ErrorFactor = errorFactor;
+        ErrorSeed = errorSeed;
+        
+        Reset();
+    }
+
+    public void ChangeSeed(int key)
+    {
+        Faker.UseSeed(Seed + key);
     }
 }

@@ -5,25 +5,36 @@
     <form method="post">
         <div class="row">
             <div asp-validation-summary="All" class="text-danger" role="alert"></div>
-            <div class="d-flex justify-content-between py-2">
+            <div class="d-flex align-items-center pb-4">
+                <label class="me-2">Region:</label>
                 <select asp-for="Region" class="form-select me-4" aria-label="Default select example">
                     @foreach (var region in RegionHelper.Regions)
                     {
                         <option value="@region.Value">@region.Key</option>
                     }
                 </select>
-                <div class="input-group">
+                <div class="input-group align-items-center me-4">
+                    <label class="me-2">Seed:</label>
                     <input asp-for="Seed" id="seedInput" type="text" class="form-control" placeholder="Enter seed">
-                    <button id="randomizeButton" type="button" class="btn btn-primary">
+                    <button id="randomizeButton" type="button" class="btn btn-secondary">
                         Randomize
                     </button>
                 </div>
-            </div>
 
-            <div class="d-flex justify-content-between">
-                <button type="submit" class="btn btn-primary">
+                <div class="input-group">
+                    <label class="me-2">Errors:</label>
+                    <input class="me-2 w-50" asp-for="SliderValue" type="range" min="0" max="10" step="0.25" id="slider" oninput="updateField()"/>
+                    <input style="width: 50px" asp-for="FieldValue" type="text" id="field" oninput="updateSlider()"/>
+                </div>
+            </div>
+            
+            <div class="d-flex">
+                <button type="submit" class="btn btn-primary w-100 me-2">
                     Generate
                 </button>
+                <a asp-action="ExportToCSV" class="btn btn-info w-100 ms-2">
+                    Export
+                </a>
             </div>
         </div>
         <br/>
@@ -38,15 +49,18 @@
             </tr>
             </thead>
             <tbody>
-            @foreach (var user in Model.Users)
+            @if (Model.Users != null)
             {
-                <tr>
-                    <td>@user.Number</td>
-                    <td>@user.Id</td>
-                    <td>@user.Name</td>
-                    <td>@user.FullAddress</td>
-                    <td>@user.PhoneNumber</td>
-                </tr>
+                @foreach (var user in Model.Users)
+                {
+                    <tr>
+                        <td>@user.Number</td>
+                        <td>@user.Id</td>
+                        <td>@user.Name</td>
+                        <td>@user.FullAddress</td>
+                        <td>@user.PhoneNumber</td>
+                    </tr>
+                }
             }
             </tbody>
         </table>
@@ -56,13 +70,14 @@
 @section Scripts
 {
     <script>
-        var increment = 10;
+        var userCount = 10;
+        var pageNumber = 1;
         
         function loadData() {
             $.ajax({
                 url: '/Home/LoadData',
                 type: 'GET',
-                data: { count: increment },
+                data: { count: userCount, pageNumber: ++pageNumber },
                 success: function (response) {
                     $('table tbody').append(response);
                 }
@@ -80,5 +95,17 @@
                 $('#seedInput').val(seed);
             });
         });
+
+        function updateField() {
+            var slider = document.getElementById('slider');
+            var field = document.getElementById('field');
+            field.value = slider.value;
+        }
+
+        function updateSlider() {
+            var slider = document.getElementById('slider');
+            var field = document.getElementById('field');
+            slider.value = Math.min(field.value, 10);
+        }
     </script>
 }

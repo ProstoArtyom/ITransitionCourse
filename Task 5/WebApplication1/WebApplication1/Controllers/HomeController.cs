@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Text;
+using FileHelpers;
 using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json;
 using WebApplication1.Models;
-using WebApplication1.Utility;
-using WebApplication1.Utility.ViewModels;
+using WebApplication1.Models.ViewModels;
+using WebApplication1.Utility.Faker;
 
 namespace WebApplication1.Controllers
 {
@@ -21,13 +24,14 @@ namespace WebApplication1.Controllers
         public IActionResult Index()
         {
             _userGenerator.Reset();
-            UserVM userVM = new()
+            var userVm = new UserVM
             {
                 Region = _userGenerator.Region,
                 Seed = _userGenerator.Seed,
-                Users = _userGenerator.Generate(20)
+                FieldValue = _userGenerator.ErrorFactor,
+                Users = _userGenerator.Users = _userGenerator.Generate(20).ToList()
             };
-            return View(userVM);
+            return View(userVm);
         }
         
         [HttpPost]
@@ -35,19 +39,39 @@ namespace WebApplication1.Controllers
         {
             if (ModelState.IsValid)
             {
-                _userGenerator.Region = userVm.Region;
-                _userGenerator.Seed = userVm.Seed;
+                _userGenerator.SetValues(userVm.Region, 
+                    userVm.Seed,
+                    userVm.FieldValue,
+                    userVm.Seed + 1);
+            }
+            else
+            {
+                _userGenerator.Reset();
             }
 
             return Index();
         }
         
-        public IActionResult LoadData(int count)
+        public IActionResult LoadData(int count, int pageNumber)
         {
+            _userGenerator.ChangeSeed(pageNumber);
             var users = _userGenerator.Generate(count);
+            _userGenerator.Users.AddRange(users);
             return PartialView("_UsersPartial", users);
         }
-        
+
+        public IActionResult ExportToCSV()
+        {
+            var builder = new StringBuilder();
+            builder.AppendLine("Number,Id,FullName,FullAddress,PhoneNumber");
+            foreach (var user in _userGenerator.Users)
+            {
+                builder.AppendLine($"{user.Number},{user.Id},{user.Name},{user.FullAddress},{user.PhoneNumber}");
+            }
+
+            return File(Encoding.UTF8.GetBytes(builder.ToString()), "text/csv", "Users.csv");
+        }
+
         public IActionResult Privacy()
         {
             return View();

@@ -1,6 +1,6 @@
 ﻿using Bogus.DataSets;
 
-namespace WebApplication1.Utility.Extensions;
+namespace WebApplication1.Utility.Faker.Extensions;
 
 public static class FakerExtensions
 {
