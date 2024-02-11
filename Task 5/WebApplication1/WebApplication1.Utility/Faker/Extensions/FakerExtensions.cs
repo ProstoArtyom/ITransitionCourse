@@ -6,6 +6,6 @@ public static class FakerExtensions
 {
     public static string GetFullAddress(this Address address)
     {
-        return String.Join(", ", address.City(), address.StreetAddress(), address.SecondaryAddress());
+        return string.Join(", ", address.City(), address.StreetAddress(), address.SecondaryAddress());
     }
 }
