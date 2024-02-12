@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Net.Http;
 using WebApplication1.Models;
+using WebApplication1.Models.ViewModels;
 
 namespace WebApplication1.Controllers
 {
@@ -15,7 +18,34 @@ namespace WebApplication1.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var nickname = GetNickname();
+            if (nickname == null) { return RedirectToAction(nameof(Nickname)); }
+            return View(nameof(Index), nickname);
+        }
+
+        public IActionResult Nickname()
+        {
+            var nickname = GetNickname();
+            if (nickname != null) { return RedirectToAction(nameof(Index)); }
+            return View(new UserVM());
+        }
+
+        [HttpPost]
+        public IActionResult Nickname(UserVM obj)
+        {
+            HttpContext.Session.SetString("Nickname", obj.Name);
+            return RedirectToAction(nameof(Index));
+        }
+
+        public string? GetNickname()
+        {
+            return HttpContext.Session.GetString("Nickname");
+        }
+
+        public IActionResult ChangeNickname()
+        { 
+            HttpContext.Session.Remove("Nickname");
+            return RedirectToAction("Index");
         }
 
         public IActionResult Privacy()

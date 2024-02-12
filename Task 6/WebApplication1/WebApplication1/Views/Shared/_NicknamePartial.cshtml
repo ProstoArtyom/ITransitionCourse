@@ -1,0 +1,18 @@
+﻿@inject IHttpContextAccessor _httpContext
+
+<ul class="navbar-nav">
+    @{
+        var nickname = _httpContext.HttpContext.Session.GetString("Nickname");
+        if (nickname != null)
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark">Hello, @nickname!</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-controller="Home" asp-action="ChangeNickname">
+                    Change nickname
+                </a>
+            </li>
+        }
+    }
+</ul>

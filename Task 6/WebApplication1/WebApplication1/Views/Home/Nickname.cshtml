@@ -1,0 +1,16 @@
+﻿@model UserVM
+
+<h1 class="display-4">Enter your nickname:</h1>
+<form method="post" class="row">
+    <div asp-validation-summary="All" class="text-danger" role="alert"></div>
+    <div class="input-group">
+        <input asp-for="Name" type="text"/>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial"/>
+    }
+}
