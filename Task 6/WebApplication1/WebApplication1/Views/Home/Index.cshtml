@@ -1,6 +1,44 @@
-﻿@model string
+﻿@model HomeVM
 
-<div class="text-center">
-    <h1 class="display-4">Your nickname: @Model</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<a class="btn btn-primary" asp-action="AddBoard" ><i class="bi bi-plus-circle"></i> Add board</a>
+<div class="row pb-3">
+    @foreach (var board in Model.Boards)
+    {
+        <div class="col-lg-3 col-sm-6">
+            <div class="row p-2">
+                <div class="col-12 p-1">
+                    <div class="card border-0 p-3 shadow border-top border-5 rounded">
+                        <img src="https://placehold.co/500x600/png" class="card-img-top rounded" />
+                        <div class="card-body pb-0">
+                            <div class="pl-1">
+                                <p class="card-title h5 text-dark opacity-75 text-uppercase text-center">@board.Title</p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <a @* asp-action="EnterBoard" asp-route-productId="@board.Id" *@ class="btn btn-primary bg-gradient border-0 form-control">
+                                Enter board
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 </div>
+
+@section Scripts
+{
+    <script src="https://cdn.jsdelivr.net/npm/@@microsoft/signalr@7.0.14/dist/browser/signalr.min.js"></script>
+    <script>
+        var connection = new signalR.HubConnectionBuilder().withUrl("/gameHub").build();
+
+        connection.start()
+            .then(function () {
+                console.log('Connection started');
+            })
+            .catch(function (err) {
+                return console.error(err.toString());
+            });
+    </script>
+}

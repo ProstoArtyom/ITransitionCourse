@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication1.Models", "W
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication1.Utility", "WebApplication1.Utility\WebApplication1.Utility.csproj", "{A39EF8FD-89D0-46BF-A782-BE1B93A1DCE0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication1.DataAccess", "WebApplication1.DataAccess\WebApplication1.DataAccess.csproj", "{32AFEB66-6138-4A6B-B1B2-96F969ADC2F3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{A39EF8FD-89D0-46BF-A782-BE1B93A1DCE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A39EF8FD-89D0-46BF-A782-BE1B93A1DCE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A39EF8FD-89D0-46BF-A782-BE1B93A1DCE0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32AFEB66-6138-4A6B-B1B2-96F969ADC2F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32AFEB66-6138-4A6B-B1B2-96F969ADC2F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32AFEB66-6138-4A6B-B1B2-96F969ADC2F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32AFEB66-6138-4A6B-B1B2-96F969ADC2F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
